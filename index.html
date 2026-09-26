@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-<title>尉跃海 — KLEIN BLUE / WHITE · v37</title>
+<title>尉跃海 — KLEIN BLUE / WHITE · v38</title>
 <meta name="description" content="尉跃海个人创意作品集与个人介绍 · AI原生开发 · 创成式设计 · 数字内容与视觉设计" />
 
 <!-- Optional animation engines are loaded asynchronously after the page shell is ready. -->
@@ -4565,8 +4565,38 @@ body.route-is-closing .route-view.is-active{
 @media(max-width:600px){#mainHonorMini{width:min(66vw,300px)!important}}
 </style>
 <script>
-window.YH_MOBILE=matchMedia('(max-width:1024px) and (pointer:coarse)').matches;
-if(window.YH_MOBILE)document.documentElement.classList.add('yh-mobile');
+window.YH_MOBILE=matchMedia('(pointer:coarse)').matches && Math.min(screen.width,screen.height)<=820;
+if(window.YH_MOBILE){
+  const root=document.documentElement;
+  root.classList.add('yh-mobile','yh-intro-lock');
+  let lastPortrait=null,landscapeScroll=0,restoreTimer=0,restoring=false;
+  addEventListener('scroll',()=>{
+    if(lastPortrait===false&&innerWidth>innerHeight&&!restoring&&
+       document.body?.classList.contains('intro-complete'))landscapeScroll=scrollY;
+  },{passive:true});
+  window.YHUpdateOrientation=()=>{
+    const portrait=innerHeight>innerWidth;
+    if(lastPortrait===portrait)return;
+    if(portrait&&lastPortrait===false&&document.body?.classList.contains('intro-complete'))restoring=true;
+    if(!portrait&&lastPortrait===true&&document.body?.classList.contains('intro-complete')){
+      clearTimeout(restoreTimer);
+      restoreTimer=setTimeout(()=>{scrollTo(0,landscapeScroll);setTimeout(()=>{restoring=false},80)},250);
+    }
+    lastPortrait=portrait;
+    root.classList.toggle('yh-portrait',portrait);
+    root.classList.toggle('yh-landscape',!portrait);
+    dispatchEvent(new Event('yh-orientation-change'));
+  };
+  YHUpdateOrientation();
+  addEventListener('orientationchange',()=>setTimeout(YHUpdateOrientation,120),{passive:true});
+  addEventListener('resize',()=>YHUpdateOrientation(),{passive:true});
+  document.addEventListener('touchmove',e=>{
+    if(document.body.classList.contains('locked')||root.classList.contains('yh-portrait')||
+      (document.body.classList.contains('route-view-active')&&!e.target.closest('.route-view.is-active')))
+      e.preventDefault();
+  },{passive:false});
+  try{history.scrollRestoration='manual'}catch(_){}
+}
 </script>
 <style>
 /* V37: all layout overrides require a touch mobile device. */
@@ -4604,8 +4634,82 @@ html.yh-mobile body{overflow-x:clip;overscroll-behavior-y:none;}
 .yh-mobile .yh-menu-panel{padding-top:calc(100px + env(safe-area-inset-top))}
 .yh-mobile .phone-guide{left:16px;right:16px;white-space:normal;font-size:8px}
 </style>
+<style>
+/* V38 / phone landscape only. Desktop styles do not match these selectors. */
+.yh-mobile.yh-intro-lock,.yh-mobile.yh-intro-lock body{
+ overflow:hidden!important;touch-action:none!important;overscroll-behavior:none!important;
+}
+.yh-mobile.yh-intro-lock #intro,.yh-mobile.yh-intro-lock #fishIntroCanvas{touch-action:none!important}
+.mobile-landscape-gate{display:none}
+.yh-mobile.yh-portrait .mobile-landscape-gate{
+ position:fixed;inset:0;z-index:25000;display:flex;align-items:center;justify-content:center;
+ flex-direction:column;gap:14px;padding:env(safe-area-inset-top) 22px env(safe-area-inset-bottom);
+ text-align:center;background:#002FA7;color:#fff;touch-action:none;overscroll-behavior:none;
+}
+.yh-mobile.yh-portrait .rotate-device{width:96px;height:96px;animation:deviceInvite 2.8s ease-in-out infinite}
+.yh-mobile.yh-portrait .mobile-landscape-gate strong{font:900 clamp(19px,6vw,26px)/1.2 Arial,sans-serif}
+.yh-mobile.yh-portrait .mobile-landscape-gate span{font:500 13px/1.5 Arial,sans-serif;opacity:.82;max-width:320px}
+.yh-mobile.yh-portrait .mobile-landscape-gate button{border:1px solid #fff;background:#fff;color:#002FA7;border-radius:24px;padding:10px 18px;font-weight:900;touch-action:manipulation}
+@keyframes deviceInvite{50%{transform:rotate(14deg) scale(1.06)}}
+.yh-mobile.yh-landscape{scroll-padding-top:52px;overscroll-behavior:none!important}
+.yh-mobile.yh-landscape body{overscroll-behavior:none!important}
+.yh-mobile.yh-landscape .page{min-height:100svh;padding:calc(56px + env(safe-area-inset-top)) max(4vw,env(safe-area-inset-right)) 22px max(4vw,env(safe-area-inset-left));scroll-margin-top:50px}
+.yh-mobile.yh-landscape .page-inner{max-width:100%;width:100%}
+.yh-mobile.yh-landscape body.intro-complete::after{height:calc(50px + env(safe-area-inset-top))}
+.yh-mobile.yh-landscape #openingMark{width:38px!important;height:38px!important;top:calc(6px + env(safe-area-inset-top))!important;right:max(20px,env(safe-area-inset-right))!important}
+.yh-mobile.yh-landscape #openingMark .yh-core{font-size:19px!important}
+.yh-mobile.yh-landscape #openingMark .orbit-a{width:34px;height:34px}
+.yh-mobile.yh-landscape #openingMark .orbit-b{width:44px;height:44px}
+.yh-mobile.yh-landscape #openingMark .orbit-c{width:50px;height:50px}
+.yh-mobile.yh-landscape .reference-topbar{top:calc(57px + env(safe-area-inset-top))}
+.yh-mobile.yh-landscape .yh-menu-panel{padding-top:calc(52px + env(safe-area-inset-top))}
+.yh-mobile.yh-landscape .opening .page-inner{padding:2vh 4vw 7vh}
+.yh-mobile.yh-landscape .opening-layout,.yh-mobile.yh-landscape .about-layout,
+.yh-mobile.yh-landscape .ai-lab{grid-template-columns:1fr 1fr;gap:3vw}
+.yh-mobile.yh-landscape .opening-copy h1{font-size:clamp(42px,8vw,92px)}
+.yh-mobile.yh-landscape .skills-page{padding-top:calc(56px + env(safe-area-inset-top));padding-bottom:0}
+.yh-mobile.yh-landscape .skills-heading{min-height:30svh}
+.yh-mobile.yh-landscape .skills-heading h2{font-size:clamp(38px,6.5vw,70px)}
+.yh-mobile.yh-landscape .skill-slide{grid-template-columns:minmax(0,1fr) minmax(0,.9fr);gap:3vw;min-height:calc(100svh - 52px);padding:18px 0;height:auto}
+.yh-mobile.yh-landscape .skill-text{max-width:100%}
+.yh-mobile.yh-landscape .skill-title{font-size:clamp(28px,4.8vw,44px);overflow-wrap:anywhere}
+.yh-mobile.yh-landscape .skill-sub{font-size:clamp(14px,2.1vw,21px);margin-top:10px}
+.yh-mobile.yh-landscape .skill-meta{font-size:10px;line-height:1.4;margin-top:7px}
+.yh-mobile.yh-landscape .skill-index{font-size:18vw;bottom:0}
+.yh-mobile.yh-landscape .lottie-box{height:min(56svh,250px);min-height:145px;width:100%}
+.yh-mobile.yh-landscape .lottie-target,.yh-mobile.yh-landscape .skill-motion-fallback{width:min(85%,220px);height:min(85%,220px)}
+.yh-mobile.yh-landscape .creativity-page{height:calc(100svh - 50px)!important;min-height:0!important;scroll-margin-top:0;padding:calc(56px + env(safe-area-inset-top)) 4vw 0!important}
+.yh-mobile.yh-landscape .creative-hero{height:52%;min-height:0;align-items:center;z-index:5}
+.yh-mobile.yh-landscape .creative-title{font-size:clamp(25px,4.2vw,42px)!important;line-height:.92}
+.yh-mobile.yh-landscape .creative-caption{bottom:-15px;font-size:8px}
+.yh-mobile.yh-landscape #bulb-stage{top:auto!important;bottom:0!important;height:clamp(145px,42svh,225px)!important;min-height:0!important;z-index:2;opacity:1!important;transform:none!important;transition:none!important}
+.yh-mobile.yh-landscape .bulb-tip,.yh-mobile.yh-landscape .bulb-scroll-copy{display:none}
+.yh-mobile.yh-landscape .bulb-scroll-copy{bottom:20px;font-size:8px}
+.yh-mobile.yh-landscape .photos-page{min-height:100svh!important}
+.yh-mobile.yh-landscape .contact-dark,.yh-mobile.yh-landscape .contact-hero{min-height:100svh}
+.yh-mobile.yh-landscape .contact-hero{padding:52px 6vw 30px}
+.yh-mobile.yh-landscape .contact-lockup .contact-title{font-size:clamp(40px,10vw,102px)}
+.yh-mobile.yh-landscape .route-view{padding-top:0}
+.yh-mobile.yh-landscape .route-topbar{top:calc(50px + env(safe-area-inset-top));height:50px}
+.yh-mobile.yh-landscape .photos-canvas-stage{top:calc(100px + env(safe-area-inset-top))}
+.yh-mobile.yh-landscape .honors-stack-page{min-height:100svh;padding:calc(110px + env(safe-area-inset-top)) 5vw 18px;gap:3vw;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr)}
+.yh-mobile.yh-landscape .honors-stack-copy h2{font-size:clamp(32px,5.4vw,58px)}
+/* The mobile caution arrow uses a vector path, so fallback fonts cannot change it. */
+.yh-mobile .caution-sign::after{
+ content:"";top:17px;left:11px;right:auto;width:20px;height:23px;transform:none;text-shadow:none;
+ background: center / contain no-repeat url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2v18M5 13l7 7 7-7' fill='none' stroke='%23fff' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+.yh-mobile .caution-sign{transform:none!important}
+.yh-mobile.yh-landscape .scroll-caution{bottom:10px}
+</style>
 </head>
 <body class="locked">
+<div id="mobileLandscapeGate" class="mobile-landscape-gate" role="dialog" aria-modal="true" aria-label="请旋转手机横屏观看">
+  <svg class="rotate-device" viewBox="0 0 128 128" aria-hidden="true"><rect x="28" y="29" width="70" height="45" rx="9" fill="none" stroke="currentColor" stroke-width="4"/><circle cx="91" cy="52" r="2" fill="currentColor"/><path d="M28 94a46 46 0 0 0 78-12M106 82l1 15-15-5" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  <strong>横屏观看 · 进入跃海的世界</strong>
+  <span>请将手机横过来，完整体验鱼跃开场与作品集。</span>
+  <button id="requestLandscape" type="button">尝试锁定横屏 ↗</button>
+</div>
 <div class="noise"></div>
 
 <!-- YH FULLSCREEN STAGGERED MENU -->
@@ -5286,6 +5390,7 @@ function initFishIntro(){
   let ended=false;
   let raf=0;
   let wordFlightStarted=false;
+  let pausedAt=0,started=false,mobileFailsafe=0;
   let startTime=performance.now();
   let last=startTime;
 
@@ -5758,6 +5863,7 @@ function initFishIntro(){
 
   function frame(now){
     if(ended)return;
+    if(mobile&&document.documentElement.classList.contains("yh-portrait")){pausedAt=now;raf=0;return}
 
     const sec=(now-startTime)/1000;
     const dt=Math.min(.028,(now-last)/1000);
@@ -5797,6 +5903,7 @@ function initFishIntro(){
   }
 
   function revealMain(){
+    if(mobile)document.documentElement.classList.remove('yh-intro-lock');
     document.body.classList.remove('locked');
     document.body.classList.add('yh-landed');
 
@@ -5959,13 +6066,23 @@ function initFishIntro(){
 
   addEventListener('resize',resize,{passive:true});
 
-  if(mobile){requestAnimationFrame(()=>{startTime=last=performance.now();raf=requestAnimationFrame(frame)})}
-  else raf=requestAnimationFrame(frame);
-
-  // failsafe
-  setTimeout(()=>{
-    if(!ended)finishNow();
-  },20500);
+  if(mobile){
+    const startOrResume=()=>{
+      if(ended||document.documentElement.classList.contains('yh-portrait'))return;
+      const now=performance.now();
+      if(!started){started=true;startTime=last=now}
+      else if(pausedAt){startTime+=now-pausedAt;last=now;pausedAt=0}
+      resize();
+      if(!raf&&!wordFlightStarted)raf=requestAnimationFrame(frame);
+      clearTimeout(mobileFailsafe);
+      mobileFailsafe=setTimeout(()=>{if(!ended&&!document.documentElement.classList.contains('yh-portrait'))finishNow()},20500);
+    };
+    addEventListener('yh-orientation-change',startOrResume);
+    if(!document.documentElement.classList.contains('yh-portrait'))requestAnimationFrame(startOrResume);
+  }else{
+    raf=requestAnimationFrame(frame);
+    setTimeout(()=>{if(!ended)finishNow()},20500);
+  }
 }
 
 if(document.readyState==='loading'){
@@ -6605,14 +6722,14 @@ function initBulbs(){
     if(released)return;
     released=true;
 
-    const count=mobile?6:Math.min(24,Math.max(15,Math.round(w/82)));
+    const count=mobile?Math.min(11,Math.max(7,Math.round(w/80))):Math.min(24,Math.max(15,Math.round(w/82)));
 
     for(let i=0;i<count;i++){
       setTimeout(()=>{
-        const r=mobile?15+Math.random()*7:55+Math.random()*20;
+        const r=mobile?Math.min(34,Math.max(22,w/30))+Math.random()*4:55+Math.random()*20;
         const bulb=makeBulb(
-          r+Math.random()*(w-r*2),
-          -r-24-Math.random()*145,
+          mobile? (i+.5)*w/count+(Math.random()-.5)*w/count*.28 : r+Math.random()*(w-r*2),
+          -r-24-Math.random()*(mobile?45:145),
           r,
           i
         );
@@ -6625,12 +6742,19 @@ function initBulbs(){
   const ioBulbs=new IntersectionObserver(entries=>entries.forEach(e=>{
     if(e.isIntersecting&&e.intersectionRatio>.12)spawn();
     if(mobile){
-      visible=e.isIntersecting&&!document.hidden;
+      visible=e.isIntersecting&&!document.hidden&&!document.documentElement.classList.contains('yh-portrait');
       if(visible&&!loopRAF){lastT=performance.now();loopRAF=requestAnimationFrame(loop)}
       if(!visible){cancelAnimationFrame(loopRAF);loopRAF=0}
     }
   }),{threshold:[.12,.3]});
   ioBulbs.observe(section);
+  if(mobile)addEventListener('yh-orientation-change',()=>{
+    resize();
+    visible=!document.hidden&&!document.documentElement.classList.contains('yh-portrait')&&
+      section.getBoundingClientRect().top<innerHeight&&section.getBoundingClientRect().bottom>0;
+    if(!visible){cancelAnimationFrame(loopRAF);loopRAF=0}
+    else if(!loopRAF){lastT=performance.now();loopRAF=requestAnimationFrame(loop)}
+  });
 
   function solveBounds(b){
     const bottom=h-FLOOR_PAD;
@@ -7052,6 +7176,10 @@ function initViewRouter(){
 
   const smoothRestore=y=>{
     const targetY=Math.max(0,Number(y)||0);
+    if(window.YH_MOBILE){
+      if(Math.abs(window.scrollY-targetY)>2)window.scrollTo(0,targetY);
+      return;
+    }
 
     if(window.__smoothScrollTo){
       window.__smoothScrollTo(targetY);
@@ -7164,6 +7292,7 @@ function initViewRouter(){
   };
 
   const navigate=(name,{history=true}={})=>{
+    if(window.YH_MOBILE)clearTimeout(closeTimer);
     if(isSubpage(name)){
       captureReturnPoint();
       showView(name);
@@ -7192,7 +7321,8 @@ function initViewRouter(){
   };
 
   $$('[data-route-nav]').forEach(btn=>{
-    btn.addEventListener('click',()=>{
+    btn.addEventListener('click',e=>{
+      if(window.YH_MOBILE)e.preventDefault();
       navigate(btn.dataset.routeNav||'home');
     });
   });
@@ -7212,11 +7342,13 @@ function initViewRouter(){
 
   addEventListener('popstate',()=>{
     const target=parseLocation();
+    if(window.YH_MOBILE)clearTimeout(closeTimer);
 
     if(isSubpage(target)){
       showView(target);
     }else{
       closeViews();
+      if(window.YH_MOBILE)requestAnimationFrame(()=>smoothRestore(returnState.scrollY));
     }
   });
 
@@ -8326,7 +8458,8 @@ function initPhone(){
   hitbox.addEventListener('pointermove',e=>{if(!p.dragging)return;e.preventDefault();const q=localPoint(e),now=performance.now();if(lastPointer){const dt=Math.max(8,now-lastPointer.time);releaseVelocity.x=(q.x-lastPointer.x)/dt*16;releaseVelocity.y=(q.y-lastPointer.y)/dt*16}lastPointer={x:q.x,y:q.y,time:now};p.x=Math.max(58,Math.min(w-58,q.x-dragOffset.x));p.y=Math.max(anchor.y+32,Math.min(h-40,q.y-dragOffset.y));p.a=Math.max(-.48,Math.min(.48,releaseVelocity.x*.018))});
   function releasePhone(){
     if(!p.dragging)return;p.dragging=false;p.vx=releaseVelocity.x*9;p.vy=releaseVelocity.y*3;p.av=releaseVelocity.x*.008;
-    if(p.y>h-108&&!p.resetLock){p.resetLock=true;(window.__smoothScrollTo?window.__smoothScrollTo(0):window.scrollTo({top:0,behavior:'smooth'}));setTimeout(()=>{measureAnchor();p.x=anchor.x;p.y=anchor.y+rest;p.vx=190;p.vy=0;p.a=.04;p.av=0;p.resetLock=false},900)}
+    if(p.y>h-108&&!p.resetLock&&(!window.YH_MOBILE||
+      (releaseVelocity.y>1.5&&p.y>h-50))){p.resetLock=true;(window.__smoothScrollTo?window.__smoothScrollTo(0):window.scrollTo({top:0,behavior:'smooth'}));setTimeout(()=>{measureAnchor();p.x=anchor.x;p.y=anchor.y+rest;p.vx=190;p.vy=0;p.a=.04;p.av=0;p.resetLock=false},900)}
   }
   hitbox.addEventListener('pointerup',releasePhone);hitbox.addEventListener('pointercancel',e=>{if(window.YH_MOBILE){p.dragging=false;lastPointer=null;releaseVelocity={x:0,y:0};}else releasePhone(e)});addEventListener('resize',resize,{passive:true});
 }
@@ -8793,7 +8926,19 @@ function mobileNear(selector,init){
   }},{rootMargin:'180px'});
   document.addEventListener('yh-main-ready',()=>io.observe(el),{once:true});
 }
+function initMobileLandscape(){
+  if(!window.YH_MOBILE)return;
+  document.getElementById('requestLandscape')?.addEventListener('click',async()=>{
+    try{
+      if(!document.fullscreenElement&&document.documentElement.requestFullscreen)
+        await document.documentElement.requestFullscreen();
+      if(screen.orientation?.lock)await screen.orientation.lock('landscape');
+    }catch(_){} // The rotate-device prompt remains available if the browser declines.
+    window.YHUpdateOrientation?.();
+  });
+}
 function bootInteractiveSystems(){
+  initMobileLandscape();
   enforceSingleGlobalYH();
   initOpeningWaves();
   if(!window.YH_MOBILE)initMagneticYoyo();
