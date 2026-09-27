@@ -9,7 +9,7 @@ var mobile=(navigator.maxTouchPoints>0||matchMedia('(pointer:coarse)').matches)&
 if(mobile&&window.top===window.self)location.replace('./landscape.html'+location.search+location.hash);
 })();
 </script>
-<title>尉跃海 — KLEIN BLUE / WHITE · v42 LANDSCAPE</title>
+<title>尉跃海 — KLEIN BLUE / WHITE · v44 MOBILE GALLERY</title>
 <meta name="description" content="尉跃海个人创意作品集与个人介绍 · AI原生开发 · 创成式设计 · 数字内容与视觉设计" />
 
 <!-- Optional animation engines are loaded asynchronously after the page shell is ready. -->
@@ -4690,6 +4690,66 @@ html.yh-mobile body{overflow-x:clip;overscroll-behavior-y:none;}
 </style>
 <style>
 .yh-mobile .fish-intro-skip{z-index:100;width:104px;height:40px;display:grid;place-items:center;font:900 12px/1 Arial,sans-serif;background:rgba(0,47,167,.8);border-color:#fff}
+</style><style>
+/* Mobile only: constrain both modules to the landscape viewport. */
+.yh-mobile #photos{min-height:100svh!important;padding:62px 5vw 20px!important;overflow:hidden}
+.yh-mobile #photos .photos-wrap{display:grid;grid-template-columns:1fr 1fr;gap:2vw;align-items:center;min-height:calc(100svh - 82px);height:auto}
+.yh-mobile #photos .photos-head{margin:0;min-width:0}
+.yh-mobile #photos .photos-title{font-size:clamp(44px,8vw,90px);line-height:1;letter-spacing:-.06em}
+.yh-mobile #photos .photos-sub,.yh-mobile #photos .photos-caption{font-size:9px;line-height:1.5;letter-spacing:.06em}
+.yh-mobile #photos .card-table{width:100%;height:calc(100svh - 110px);min-height:0;margin:0;transform:none}
+.yh-mobile #photos .poker-card{width:min(17vw,calc((100svh - 130px)*.68));height:min(24vw,calc(100svh - 130px));min-height:0;left:8%;top:26%;border-radius:12px;box-shadow:0 5px 14px #001b6244}
+.yh-mobile #photos .hand-card{width:min(17vw,calc((100svh - 130px)*.68))!important}
+.yh-mobile #photos .corner,.yh-mobile #photos .caption{font-size:7px;padding:3px}
+.yh-mobile #routeHonors .route-topbar{top:50px;height:40px;padding:0 4vw}
+.yh-mobile #routeHonors .honors-stack-page{display:grid!important;grid-template-columns:minmax(0,.7fr) minmax(0,1.3fr)!important;gap:24px!important;height:100svh!important;min-height:0!important;padding:100px 5vw 24px!important;overflow:hidden}
+.yh-mobile #routeHonors .honors-stack-copy{display:block!important;min-width:0}
+.yh-mobile #routeHonors .honors-stack-copy h2{font-size:clamp(24px,4vw,42px)!important;line-height:1}
+.yh-mobile #routeHonors .honors-stack-copy p{font-size:10px;line-height:1.5;margin:8px 0}
+.yh-mobile #routeHonors .honors-stack-active{margin-top:8px}
+.yh-mobile #routeHonors .honors-stack-active strong{font-size:12px!important;overflow-wrap:anywhere}
+.yh-mobile #routeHonors .honors-stack-active em{font-size:9px}
+.yh-mobile #routeHonors .honors-stack-stage{height:100%!important;min-height:0!important;perspective:none!important}
+.yh-mobile #routeHonors .honors-card-stack{width:100%!important;height:100%!important;max-height:none!important;aspect-ratio:auto!important;perspective:none!important;display:flex;flex-direction:column;gap:8px;touch-action:pan-y}
+.yh-mobile #routeHonors .honors-stack-orbit{display:none!important}
+.yh-mobile .mobile-honor-image{display:block;width:100%;height:calc(100% - 36px);min-height:0;object-fit:contain;background:#fff;border:1px solid #002fa733;border-radius:8px}
+.yh-mobile .mobile-honor-controls{display:flex;align-items:center;justify-content:space-between;gap:12px;color:#002fa7;font:11px monospace}
+.yh-mobile .mobile-honor-controls button{border:1px solid #002fa7;border-radius:20px;background:white;color:#002fa7;padding:6px 14px;min-height:30px}
+.yh-mobile #routeCloseGlobal{width:34px!important;height:34px!important;top:56px!important;right:90px!important}
+.yh-mobile.route-view-active .noise{display:none}
+</style>
+<style>
+.yh-mobile #about{padding:64px 5vw 24px!important;min-height:100svh}
+.yh-mobile #about .about-layout{min-height:calc(100svh - 88px);grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);grid-template-rows:auto 1fr;gap:16px 5vw;align-items:center}
+.yh-mobile #about .about-title{position:relative;inset:auto;grid-column:1/-1;font-size:clamp(38px,6.5vw,66px);line-height:1;white-space:nowrap}
+.yh-mobile #about .about-card{margin:0;min-width:0}
+.yh-mobile #about .about-card p{font-size:clamp(13px,1.9vw,18px);line-height:1.5}
+.yh-mobile #about .about-card small{font-size:clamp(10px,1.4vw,13px);line-height:1.6;margin-top:10px;letter-spacing:.02em}
+.yh-mobile #about .about-signature-wrap{min-height:0;height:150px;display:flex;flex-direction:column;justify-content:center;gap:4px;overflow:hidden}
+.yh-mobile #about .about-signature-meta{position:static;transform:none;font-size:7px;letter-spacing:.1em}
+.yh-mobile #about .about-signature-cn{position:static;order:1;transform:none!important;font-size:clamp(32px,5vw,48px);line-height:1.2;letter-spacing:.08em;white-space:nowrap;text-shadow:none;animation-name:mobileNameReveal!important}
+.yh-mobile #about .about-signature{order:2;width:100%;height:40px;transform:none!important;animation:none!important}
+.yh-mobile #about .about-signature-caption{position:static;order:3;transform:none;font-size:7px;letter-spacing:.08em}
+@keyframes mobileNameReveal{to{opacity:1}}
+</style><style>
+.yh-mobile #about,.yh-mobile #photos{min-height:calc(100svh - 50px)!important;padding-top:18px!important;padding-bottom:16px!important}
+.yh-mobile #about .about-layout{min-height:0;height:calc(100svh - 90px);grid-template-rows:auto minmax(0,1fr);gap:10px 4vw}
+.yh-mobile #about .about-signature-wrap{height:140px;max-height:100%}
+.yh-mobile #about .about-card{align-self:center}
+.yh-mobile #photos .photos-wrap{min-height:0;height:calc(100svh - 90px)}
+.yh-mobile #photos .card-table{height:100%;min-height:0}
+.yh-mobile #photos .poker-card{height:calc(100svh - 175px);width:calc((100svh - 175px)*.68);top:24%;left:8%}
+.yh-mobile #photos .hand-card{width:calc((100svh - 175px)*.68)!important}
+.yh-mobile #routeHonors .honors-stack-page{grid-template-rows:minmax(0,1fr)!important}
+.yh-mobile #routeHonors .honors-stack-stage,.yh-mobile #routeHonors .honors-card-stack{height:calc(100svh - 124px)!important;min-height:0!important;min-width:0!important}
+.yh-mobile #routeHonors .mobile-honor-image{height:calc(100svh - 164px)!important;flex:0 0 auto;max-height:calc(100svh - 164px)!important;object-fit:contain!important}
+.yh-mobile #routeHonors .mobile-honor-controls{height:32px;flex:0 0 32px}
+.yh-mobile #routeHonors .route-topbar> :last-child{max-width:30%;visibility:hidden}
+</style><style>
+.yh-mobile #routeCloseGlobal{top:10px!important;right:80px!important;width:28px!important;height:28px!important}
+.yh-mobile #routeCloseGlobal .route-close-ring.ring-1{inset:-3px!important;width:auto!important;height:auto!important}
+.yh-mobile #routeCloseGlobal .route-close-ring.ring-2{inset:-6px!important;width:auto!important;height:auto!important}
+.yh-mobile #about .about-signature-caption{margin-top:6px}
 </style></head>
 <body class="locked">
 
@@ -5362,6 +5422,8 @@ const $$ = (s, r=document)=>[...r.querySelectorAll(s)];
 
 /* ---------------- INTRO V17 / DEEP CLOSE-UP -> CAMERA ZOOM-OUT -> YUEHAI -> YH ---------------- */
 function initFishIntro(){
+  if(window.__yhIntroInitialized)return;
+  window.__yhIntroInitialized=true;
   const intro=$('#intro');
   const canvas=$('#fishIntroCanvas');
   const morph=$('#fishMorph');
@@ -5890,6 +5952,11 @@ function initFishIntro(){
   }
 
   function revealMain(){
+    window.__yhMainReady=true;
+    if(mobile){
+      try{sessionStorage.setItem('yh-mobile-intro-completed','1')}catch(_){}
+      try{if(parent!==window)parent.__yhMobileIntroCompleted=true}catch(_){}
+    }
     if(mobile)document.documentElement.classList.remove('yh-intro-lock');
     document.body.classList.remove('locked');
     document.body.classList.add('yh-landed');
@@ -6045,6 +6112,15 @@ function initFishIntro(){
     cancelAnimationFrame(raf);
     intro.style.display='none';
     revealMain();
+  }
+
+  // A child route and a restored mobile document never replay the opening.
+  if(mobile){
+    let completed=false;
+    try{completed=sessionStorage.getItem('yh-mobile-intro-completed')==='1'}catch(_){}
+    try{completed=completed||(parent!==window&&parent.__yhMobileIntroCompleted===true)}catch(_){}
+    const routeEntry=/^#view\/(photos|honors|contact|main|home)(?:$|[/?])/.test(location.hash);
+    if(completed||routeEntry){finishNow();return;}
   }
 
   skip?.addEventListener('click',finishNow);
@@ -7349,11 +7425,8 @@ function initViewRouter(){
      */
     returnState={scrollY:0,hash:''};
 
-    document.addEventListener(
-      'yh-main-ready',
-      ()=>showView(initial),
-      {once:true}
-    );
+    if(window.__yhMainReady)showView(initial);
+    else document.addEventListener('yh-main-ready',()=>showView(initial),{once:true});
   }
 
   const api={
@@ -7895,6 +7968,21 @@ function initInfinitePhotos(){
 }
 
 /* ---------------- HONORS V21 / REAL ASSET STACK ---------------- */
+function initMobileHonors(route,stack,copy,assets){
+ if(stack.dataset.mobileReady)return;stack.dataset.mobileReady='1';
+ let index=0,start=null;
+ const img=document.createElement('img');img.className='mobile-honor-image';img.decoding='async';img.draggable=false;
+ const controls=document.createElement('div');controls.className='mobile-honor-controls';
+ const prev=document.createElement('button'),next=document.createElement('button'),count=document.createElement('span');
+ prev.type=next.type='button';prev.textContent='← 上一张';next.textContent='下一张 →';controls.append(prev,count,next);stack.replaceChildren(img,controls);
+ function render(){const item=assets[index];img.src=item.src;img.alt=item.title;count.textContent=(index+1)+' / '+assets.length;copy.replaceChildren();const title=document.createElement('strong');title.textContent=item.title;const hint=document.createElement('em');hint.textContent='点击按钮或左右滑动切换';copy.append(title,hint);}
+ function step(n){index=(index+n+assets.length)%assets.length;render()}
+ prev.onclick=()=>step(-1);next.onclick=()=>step(1);
+ img.addEventListener('pointerdown',e=>{start={x:e.clientX,y:e.clientY};img.setPointerCapture(e.pointerId)});
+ img.addEventListener('pointerup',e=>{if(!start)return;const dx=e.clientX-start.x,dy=e.clientY-start.y;start=null;if(Math.abs(dx)>35&&Math.abs(dx)>Math.abs(dy))step(dx<0?1:-1)});
+ img.addEventListener('pointercancel',()=>{start=null});render();
+}
+
 function initHonorsRoute(){
   const route=$('#routeHonors');
   const stackEl=$('#honorsCardStack');
@@ -7902,6 +7990,7 @@ function initHonorsRoute(){
   const assets=window.YH_HONOR_LIBRARY||[];
 
   if(!route||!stackEl||!activeCopy||!assets.length)return;
+  if(window.YH_MOBILE){initMobileHonors(route,stackEl,activeCopy,assets);return;}
 
   // Prevent duplicate card DOM if the system is re-initialized.
   stackEl.innerHTML='';
@@ -8924,11 +9013,11 @@ function bootInteractiveSystems(){
   initInertialScroll();
   initPhoneLazy();
 
-  initViewRouter();
   if(!window.YH_MOBILE)initInfinitePhotos();
   else document.addEventListener("photos-route-show",initInfinitePhotos,{once:true});
   if(!window.YH_MOBILE)initHonorsRoute();
   else document.addEventListener("honors-route-show",initHonorsRoute,{once:true});
+  initViewRouter();
   initRecoveredMainPageRoutes();
   initMainHonorMiniCards();
   initYHMenu();
