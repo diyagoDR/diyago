@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-<title>尉跃海 — KLEIN BLUE / WHITE · v44 MOBILE GALLERY</title>
+<title>尉跃海 — KLEIN BLUE / WHITE · v45 MOBILE GALLERY</title>
 <meta name="description" content="尉跃海个人创意作品集与个人介绍 · AI原生开发 · 创成式设计 · 数字内容与视觉设计" />
 
 <!-- Optional animation engines are loaded asynchronously after the page shell is ready. -->
@@ -4569,6 +4569,10 @@ window.YH_MOBILE=(navigator.maxTouchPoints>0 || matchMedia('(pointer:coarse)').m
 if(window.YH_MOBILE){
   const root=document.documentElement;
   root.classList.add('yh-mobile','yh-intro-lock');
+  const updateVisualHeight=()=>root.style.setProperty('--yh-visual-height',Math.round(window.visualViewport?.height||innerHeight)+'px');
+  updateVisualHeight();
+  window.visualViewport?.addEventListener('resize',updateVisualHeight,{passive:true});
+  addEventListener('orientationchange',()=>setTimeout(updateVisualHeight,160),{passive:true});
   let lastPortrait=null;
   window.YHUpdateOrientation=()=>{
     const portrait=innerHeight>innerWidth;
@@ -4721,8 +4725,8 @@ html.yh-mobile body{overflow-x:clip;overscroll-behavior-y:none;}
 .yh-mobile #about .about-card small{font-size:clamp(10px,1.4vw,13px);line-height:1.6;margin-top:10px;letter-spacing:.02em}
 .yh-mobile #about .about-signature-wrap{min-height:0;height:150px;display:flex;flex-direction:column;justify-content:center;gap:4px;overflow:hidden}
 .yh-mobile #about .about-signature-meta{position:static;transform:none;font-size:7px;letter-spacing:.1em}
-.yh-mobile #about .about-signature-cn{position:static;order:1;transform:none!important;font-size:clamp(32px,5vw,48px);line-height:1.2;letter-spacing:.08em;white-space:nowrap;text-shadow:none;animation-name:mobileNameReveal!important}
-.yh-mobile #about .about-signature{order:2;width:100%;height:40px;transform:none!important;animation:none!important}
+.yh-mobile #about .about-signature-cn{position:static;order:1;transform:none;font-size:clamp(32px,5vw,48px);line-height:1.2;letter-spacing:.08em;white-space:nowrap;text-shadow:none}
+.yh-mobile #about .about-signature{order:2;width:100%;height:40px;transform:none}
 .yh-mobile #about .about-signature-caption{position:static;order:3;transform:none;font-size:7px;letter-spacing:.08em}
 @keyframes mobileNameReveal{to{opacity:1}}
 </style><style>
@@ -4744,6 +4748,63 @@ html.yh-mobile body{overflow-x:clip;overscroll-behavior-y:none;}
 .yh-mobile #routeCloseGlobal .route-close-ring.ring-1{inset:-3px!important;width:auto!important;height:auto!important}
 .yh-mobile #routeCloseGlobal .route-close-ring.ring-2{inset:-6px!important;width:auto!important;height:auto!important}
 .yh-mobile #about .about-signature-caption{margin-top:6px}
+</style><style>
+/* V45: fit the usable WebView viewport, including changing browser chrome. */
+.yh-mobile{--yh-visual-height:100dvh}
+.yh-mobile #photos{
+  height:var(--yh-visual-height)!important;
+  min-height:0!important;
+  padding:calc(56px + env(safe-area-inset-top)) max(5vw,env(safe-area-inset-right)) calc(18px + env(safe-area-inset-bottom)) max(5vw,env(safe-area-inset-left))!important;
+}
+.yh-mobile #photos .photos-wrap{
+  width:100%;height:100%!important;min-height:0!important;
+  grid-template-columns:minmax(0,38%) minmax(0,62%);gap:0;
+}
+.yh-mobile #photos .photos-head{align-self:center;padding-right:12px}
+.yh-mobile #photos .photos-title{font-size:clamp(36px,6.8vw,75px)}
+.yh-mobile #photos .photos-sub,.yh-mobile #photos .photos-caption{font-size:clamp(7px,1vw,9px)}
+.yh-mobile #photos .card-table{
+  --photo-card-h:min(calc((var(--yh-visual-height) - 116px)*.67),calc((100vw - 44px)*.62 / 2.55 / .68));
+  width:100%;height:100%!important;min-height:0!important;overflow:visible;
+}
+.yh-mobile #photos .poker-card,
+.yh-mobile #photos .hand-card{
+  width:calc(var(--photo-card-h)*.68)!important;
+  height:var(--photo-card-h)!important;
+  min-height:0!important;left:3%;top:20%;
+}
+/* Preserve the signature drawing, then merge Chinese and English into separate final positions. */
+.yh-mobile #about .about-signature-wrap{position:relative;display:block;overflow:visible}
+.yh-mobile #about .about-signature-meta{position:absolute;top:0;left:50%;transform:translateX(-50%)}
+.yh-mobile #about .about-signature-cn{
+  position:absolute;left:35%;top:52%;font-size:clamp(30px,4.7vw,49px);
+  transform:translate(-50%,-50%) scale(.72);
+}
+.yh-mobile #about .about-signature{
+  position:absolute;left:24%;top:20%;width:76%;height:64px;
+  transform:none;
+}
+.yh-mobile #about .about-signature-text,.yh-mobile #about .about-signature-shadow{font-size:72px}
+.yh-mobile #about .about-signature-caption{position:absolute;bottom:0;left:50%;transform:translateX(-50%)}
+.yh-mobile #about .about-signature-wrap.play .about-signature-cn{
+  animation:aboutCnMergeMobile .72s var(--ease) 2.55s forwards;
+}
+.yh-mobile #about .about-signature-wrap.play .about-signature{
+  animation:aboutEnMergeMobile .72s var(--ease) 2.55s forwards;
+}
+@keyframes aboutCnMergeMobile{to{opacity:1;transform:translate(-68%,-63%) scale(1)}}
+@keyframes aboutEnMergeMobile{to{transform:translate(8%,45%) rotate(-4deg) scale(.76)}}
+.yh-mobile #routeHonors .mobile-honor-viewport{
+  position:relative;flex:1;min-height:0;overflow:hidden;
+  border:1px solid #002fa733;border-radius:8px;background:#fff;touch-action:none;
+}
+.yh-mobile #routeHonors .mobile-honor-image{
+  position:absolute;inset:0;width:100%;height:100%!important;max-height:none!important;
+  border:0;border-radius:0;object-fit:contain;will-change:transform,opacity;
+}
+.yh-mobile #routeHonors .honors-card-stack{display:flex!important;flex-direction:column}
+.yh-mobile #routeHonors .mobile-honor-controls{flex:0 0 32px}
+@media(prefers-reduced-motion:reduce){.yh-mobile #routeHonors .mobile-honor-image{will-change:auto}}
 </style></head>
 <body class="locked">
 
@@ -4791,12 +4852,16 @@ window.YH_HONOR_LIBRARY=[{"id":1,"title":"HUAWEI AI MICRO CERTIFICATION","type":
 
 
 <script>
-window.yhSkillDataReady=new Promise(function(resolve){
-var script=document.createElement('script');
-script.src='./assets/skill-lotties.js';script.async=true;
-script.onload=function(){resolve(true)};script.onerror=function(){resolve(false)};
-document.head.appendChild(script);
-});
+window.YHLoadSkillData=function(){
+ if(window.yhSkillDataReady)return window.yhSkillDataReady;
+ window.yhSkillDataReady=new Promise(function(resolve){
+  var script=document.createElement('script');
+  script.src='./assets/skill-lotties.js';script.async=true;
+  script.onload=function(){resolve(true)};script.onerror=function(){resolve(false)};
+  document.head.appendChild(script);
+ });
+ return window.yhSkillDataReady;
+};
 </script>
 
 <!-- =========================================================
@@ -7525,7 +7590,7 @@ function initInfinitePhotos(){
 
     setGeometry();
 
-    if(state.ready)scheduleFrame();
+    if(state.img_data.length)scheduleFrame();
   }
 
   function drawCover(img,x,y,w0,h0){
@@ -7551,6 +7616,12 @@ function initInfinitePhotos(){
       x+state.img_width<-state.img_width ||
       y+state.img_height<-state.img_height
     )return;
+
+    if(!item.loading){
+      item.loading=true;
+      img.onload=img.onerror=scheduleFrame;
+      img.src=item.source;
+    }
 
     ctx.save();
 
@@ -7672,8 +7743,6 @@ function initInfinitePhotos(){
       h/2-
       (state.line_max*(state.img_height+state.img_margin)-state.img_margin)/2;
 
-    let loaded=0;
-
     library.forEach((photo,i)=>{
       const index=i+1;
       const col=i%state.row_max;
@@ -7693,20 +7762,8 @@ function initInfinitePhotos(){
 
       state.img_data.push(item);
 
-      img.onload=()=>{
-        loaded++;
-        if(loaded>=library.length)state.ready=true;
-        scheduleFrame();
-      };
-
-      img.onerror=()=>{
-        loaded++;
-        if(loaded>=library.length)state.ready=true;
-        scheduleFrame();
-      };
-
-      img.src=photo.src;
     });
+    scheduleFrame();
   }
 
   function localPoint(e){
@@ -7963,18 +8020,85 @@ function initInfinitePhotos(){
 
 /* ---------------- HONORS V21 / REAL ASSET STACK ---------------- */
 function initMobileHonors(route,stack,copy,assets){
- if(stack.dataset.mobileReady)return;stack.dataset.mobileReady='1';
- let index=0,start=null;
- const img=document.createElement('img');img.className='mobile-honor-image';img.decoding='async';img.draggable=false;
+ if(stack.dataset.mobileReady)return;
+ stack.dataset.mobileReady='1';
+ let index=0,start=null,active=null,transitioning=false;
+ const reduceMotion=matchMedia('(prefers-reduced-motion: reduce)').matches;
+ const viewport=document.createElement('div');viewport.className='mobile-honor-viewport';
  const controls=document.createElement('div');controls.className='mobile-honor-controls';
  const prev=document.createElement('button'),next=document.createElement('button'),count=document.createElement('span');
- prev.type=next.type='button';prev.textContent='← 上一张';next.textContent='下一张 →';controls.append(prev,count,next);stack.replaceChildren(img,controls);
- function render(){const item=assets[index];img.src=item.src;img.alt=item.title;count.textContent=(index+1)+' / '+assets.length;copy.replaceChildren();const title=document.createElement('strong');title.textContent=item.title;const hint=document.createElement('em');hint.textContent='点击按钮或左右滑动切换';copy.append(title,hint);}
- function step(n){index=(index+n+assets.length)%assets.length;render()}
+ prev.type=next.type='button';prev.textContent='← 上一张';next.textContent='下一张 →';
+ controls.append(prev,count,next);stack.replaceChildren(viewport,controls);
+ const cache=new Map();
+ function preload(i){
+   const item=assets[(i+assets.length)%assets.length];
+   if(cache.has(item.src))return cache.get(item.src);
+   const image=new Image();image.decoding='async';image.src=item.src;
+   const ready=(image.decode?image.decode():new Promise(resolve=>{image.onload=resolve;image.onerror=resolve})).catch(()=>{});
+   cache.set(item.src,ready);return ready;
+ }
+ function warmNeighbors(){preload((index+1)%assets.length);preload((index-1+assets.length)%assets.length)}
+ function updateCopy(){
+   const item=assets[index];count.textContent=(index+1)+' / '+assets.length;
+   copy.replaceChildren();
+   const title=document.createElement('strong');title.textContent=item.title;
+   const hint=document.createElement('em');hint.textContent='拖动卡片或点击按钮切换';
+   copy.append(title,hint);
+ }
+ function makeImage(item){
+   const image=document.createElement('img');image.className='mobile-honor-image';
+   image.src=item.src;image.alt=item.title;image.decoding='async';image.fetchPriority='high';image.draggable=false;
+   return image;
+ }
+ async function step(direction,dragX=0){
+   if(transitioning)return;
+   transitioning=true;
+   const nextIndex=(index+direction+assets.length)%assets.length;
+   await preload(nextIndex);
+   const incoming=makeImage(assets[nextIndex]);viewport.append(incoming);
+   const width=viewport.clientWidth||320;
+   const outX=direction>0?-width*1.12:width*1.12;
+   const inX=-outX*.82;
+   if(!reduceMotion && active?.animate){
+     const duration=390;
+     const outgoing=active.animate([
+       {transform:`translateX(${dragX}px) rotate(${dragX*.025}deg)`,opacity:1},
+       {transform:`translateX(${outX}px) rotate(${direction>0?-14:14}deg)`,opacity:0}
+     ],{duration,easing:'cubic-bezier(.52,0,.82,.2)',fill:'forwards'});
+     const arriving=incoming.animate([
+       {transform:`translateX(${inX}px) rotate(${direction>0?10:-10}deg) scale(.94)`,opacity:.7},
+       {transform:'translateX(0) rotate(0) scale(1)',opacity:1}
+     ],{duration,easing:'cubic-bezier(.18,.85,.18,1)',fill:'forwards'});
+     await Promise.all([outgoing.finished,arriving.finished]).catch(()=>{});
+     outgoing.cancel();arriving.cancel();
+   }
+   active?.remove();active=incoming;index=nextIndex;updateCopy();warmNeighbors();transitioning=false;
+ }
  prev.onclick=()=>step(-1);next.onclick=()=>step(1);
- img.addEventListener('pointerdown',e=>{start={x:e.clientX,y:e.clientY};img.setPointerCapture(e.pointerId)});
- img.addEventListener('pointerup',e=>{if(!start)return;const dx=e.clientX-start.x,dy=e.clientY-start.y;start=null;if(Math.abs(dx)>35&&Math.abs(dx)>Math.abs(dy))step(dx<0?1:-1)});
- img.addEventListener('pointercancel',()=>{start=null});render();
+ viewport.addEventListener('pointerdown',e=>{
+   if(transitioning)return;
+   start={x:e.clientX,y:e.clientY,id:e.pointerId};
+   viewport.setPointerCapture(e.pointerId);
+ });
+ viewport.addEventListener('pointermove',e=>{
+   if(!start||e.pointerId!==start.id||!active)return;
+   const dx=e.clientX-start.x;
+   active.style.transform=`translateX(${dx}px) rotate(${dx*.025}deg)`;
+ });
+ function release(e){
+   if(!start||e.pointerId!==start.id)return;
+   const dx=e.clientX-start.x,dy=e.clientY-start.y;start=null;
+   if(Math.abs(dx)>Math.max(35,viewport.clientWidth*.16)&&Math.abs(dx)>Math.abs(dy)){
+     step(dx<0?1:-1,dx);
+   }else if(active){
+     const from=active.style.transform||'translateX(0)';
+     active.style.transform='';
+     if(!reduceMotion)active.animate([{transform:from},{transform:'translateX(0) rotate(0)'}],{duration:250,easing:'cubic-bezier(.18,.85,.18,1)'});
+   }
+ }
+ viewport.addEventListener('pointerup',release);
+ viewport.addEventListener('pointercancel',release);
+ active=makeImage(assets[index]);viewport.append(active);updateCopy();warmNeighbors();
 }
 
 function initHonorsRoute(){
@@ -8602,7 +8726,7 @@ async function bootSkillLotties(){
     if(el)mkFallback(el,label,type);
   });
 
-  const skillDataReady=await window.yhSkillDataReady;
+  const skillDataReady=await window.YHLoadSkillData();
   const ready=skillDataReady && await ensureLottie();
 
   if(ready){
@@ -8998,6 +9122,29 @@ function mobileNear(selector,init){
   }},{rootMargin:'180px'});
   document.addEventListener('yh-main-ready',()=>io.observe(el),{once:true});
 }
+function initImagePriorities(){
+  const preloadHonor=()=>{
+    const first=window.YH_HONOR_LIBRARY?.[0];
+    if(!first)return;
+    const image=new Image();image.decoding='async';image.src=first.src;
+  };
+  const observer=new IntersectionObserver(entries=>{
+    entries.forEach(entry=>{
+      if(!entry.isIntersecting)return;
+      observer.unobserve(entry.target);
+      if(entry.target.id==='photos'){
+        entry.target.querySelectorAll('img.card-photo').forEach(img=>{
+          img.loading='eager';img.fetchPriority='high';
+        });
+      }
+      if(entry.target.id==='honors')preloadHonor();
+    });
+  },{rootMargin:'500px 0px'});
+  ['photos','honors'].forEach(id=>{
+    const section=document.getElementById(id);
+    if(section)observer.observe(section);
+  });
+}
 function bootInteractiveSystems(){
   enforceSingleGlobalYH();
   initOpeningWaves();
@@ -9006,6 +9153,7 @@ function bootInteractiveSystems(){
   initPortraitXRay();
   initInertialScroll();
   initPhoneLazy();
+  initImagePriorities();
 
   if(!window.YH_MOBILE)initInfinitePhotos();
   else document.addEventListener("photos-route-show",initInfinitePhotos,{once:true});
@@ -9019,7 +9167,7 @@ function bootInteractiveSystems(){
   initSkillsQuestion();
   initPageTransitions();
   initTitleTransitions();
-  bootSkillLotties();
+  mobileNear('#skills',bootSkillLotties);
 }
 
 if(document.readyState==='loading'){
